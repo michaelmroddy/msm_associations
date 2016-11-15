@@ -90,14 +90,22 @@ In `rails console`, answer the following questions. Refer to your [CRUD with Rub
 For each question, see if you can craft a single Ruby expression that returns the final answer when entered into `rails console`.
 
  1. In what year was the oldest movie in our list released?
+ Movie.minimum(:year)
  1. In what year was the most recent movie in our list released?
+ Movie.maximum(:year)
  1. What is the duration of the shortest movie in our list?
+ Movie.minimum(:duration)
  1. What is the longest movie in our list?
+ Movie.order("duration desc").first.title
  1. How many movies in our list have the word 'godfather' in their titles?
+ Movie.where("title like '%godfather%'").count
  1. Who directed *Life Is Beautiful*?
+ m=Movie.find_by("title = 'Life Is Beautiful'").director_id
+ Director.find_by(:id=>m.director_id)
  1. How many movies in our list were directed by Francis Ford Coppola?
+ Movie.where(:director_id => 2).count
  1. What is the most recent movie in our list directed by Francis Ford Coppola?
-
+Movie.where(:director_id => 2).order("year asc").first
 ### Improving the generated boilerplate views
 
  1. Currently, on the movies index page and a movie's show page, the code that the generator wrote for you is showing users raw director ID numbers. This is bad. Replace the id number with the name of the director.
